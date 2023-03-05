@@ -14,8 +14,8 @@ services:
   web:
     image: kanchanarangcharoen/swarm01-web:050365
     networks:
-     - webproxy
-     - default
+      - webproxy
+      - default
     volumes:
       - static_data:/usr/src/app/static
     depends_on:
@@ -28,7 +28,7 @@ services:
         - traefik.http.routers.${APPNAME}-https.entrypoints=websecure
         - traefik.http.routers.${APPNAME}-https.rule=Host("${APPNAME}.xops.ipv9.me")
         - traefik.http.routers.${APPNAME}-https.tls.certresolver=default
-        - traefik.http.services.${APPNAME}.loadbalancer.server.port=8088
+        - traefik.http.services.${APPNAME}.loadbalancer.server.port=8080
 
       restart_policy:
         condition: any
@@ -40,6 +40,7 @@ services:
 volumes:
   db_data:
   static_data:
+
 
 networks:
   default:

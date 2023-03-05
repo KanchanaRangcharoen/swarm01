@@ -14,7 +14,7 @@ services:
     volumes:
       - static_data:/usr/src/app/static
     ports:
-      - "8200:8000"
+      - "8080:8000"
     depends_on:
       - db
     deploy:
