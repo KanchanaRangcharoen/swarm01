@@ -28,7 +28,7 @@ services:
         - traefik.http.routers.${APPNAME}-https.entrypoints=websecure
         - traefik.http.routers.${APPNAME}-https.rule=Host("${APPNAME}.xops.ipv9.me")
         - traefik.http.routers.${APPNAME}-https.tls.certresolver=default
-        - traefik.http.services.${APPNAME}.loadbalancer.server.port=8080
+        - traefik.http.services.${APPNAME}.loadbalancer.server.port=8200
 
       restart_policy:
         condition: any
