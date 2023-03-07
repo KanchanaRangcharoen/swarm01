@@ -10,11 +10,11 @@ services:
       - db_data:/var/lib/postgresql/data
 
   web:
-    image: kanchanarangcharoen/swarm01-web:050365
+    image: kanchanarangcharoen/django-web:0703
     volumes:
       - static_data:/usr/src/app/static
     ports:
-      - "8200:8000"
+      - "8000:8000"
     depends_on:
       - db
     deploy:

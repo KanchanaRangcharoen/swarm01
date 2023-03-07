@@ -4,4 +4,4 @@ services:
       context: app
       target: builder
     ports: 
-      - '8200:8000'
+      - '8800:8000'
