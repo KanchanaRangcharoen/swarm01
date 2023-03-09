@@ -56,9 +56,8 @@
 
 7. [Revert Proxy on Manager](#revert-proxy-on-manager)
 8. [Create Image](#create-image)
-9. Create docker-compose.yml
-10. Copy code on docker-compose.yml
-11. Deploy on Portainer
+9. [Create docker-compose.yml](#create-docker-composeyml)
+10. Bring docker-compose.yml Stack Deploy on the machine
 
 ### Revert Proxy on Manager
 - Set IP for Client
@@ -71,6 +70,7 @@
         [ip manage] traefik.demo.local
         ```
     - [Step Revert Proxy by pitimon](https://github.com/pitimon/dockerswarm-inhoure/tree/main/ep03-traefik)
+
 ### Create Image
 Bring selected apps push images 
 - Compose up file compose.yaml to create images 
@@ -92,3 +92,59 @@ Bring selected apps push images
     docker push [OPTIONS] NAME[:TAG]
     ```
     **Ex.** docker push kanchanarangcharoen/django-web:0703
+
+### Create docker-compose.yml
+<details><summary><ins>SHOW CODE docker-compose.yml</ins></summary>
+<p>
+
+```
+version: '3.7'
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - default
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  web:
+    image: kanchanarangcharoen/django-web:0703
+    networks:
+      - webproxy
+      - default
+    volumes:
+      - static_data:/usr/src/app/static
+    depends_on:
+      - db
+    deploy:
+      replicas: 1
+      labels:
+        - traefik.docker.network=webproxy
+        - traefik.enable=true
+        - traefik.http.routers.${APPNAME}-https.entrypoints=websecure
+        - traefik.http.routers.${APPNAME}-https.rule=Host("${APPNAME}.xops.ipv9.me")
+        - traefik.http.routers.${APPNAME}-https.tls.certresolver=default
+        - traefik.http.services.${APPNAME}.loadbalancer.server.port=8000
+
+      restart_policy:
+        condition: any
+      update_config:
+        delay: 5s
+        parallelism: 1
+        order: start-first
+
+volumes:
+  db_data:
+  static_data:
+
+networks:
+  default:
+    driver: overlay
+    attachable: true
+  webproxy:
+    external: true
+```
