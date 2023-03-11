@@ -13,51 +13,6 @@
 
 ## Development Stage
 **Ref Prepare Machine** => https://github.com/pitimon/dockerswarm-inhoure#readme
-1. Create VM on proxmox
-2. Set Template
-    - Set time
-        ```
-        timedatectl set-timezone Asia/Bangkok
-        ```
-    - [Install docker](https://docs.docker.com/engine/install/ubuntu/)
-3. Create node from Template
-    - manage
-    - work1
-    - work2
-4. Change hostname
-    ```
-    hostnamectl set-hostname [set name] 
-    ```
-5. Edit machine-id in clone
-    ```
-    cp /dev/null /etc/machine-id
-    rm /var/lib/dbus/machine-id
-    ln -s /etc/machine-id /var/lib/dbus/machine-id
-    init 0
-    ```
-
-6. Create Docker Swarm and Portainer on Manager
-    - Swarm init
-
-        ```
-        docker swarm init 
-        ```    
-    - Copy token url and run it on 2 worker machines
-    - manager node
-
-        ```
-        docker node ls
-        ```    
-    - Install portainer for swarm
-
-        ```
-        curl -L https://downloads.portainer.io/ce2-17/portainer-agent-stack.yml -o portainer-agent-stack.yml docker stack deploy -c portainer-agent-stack.yml portainer
-        ```
-
-7. [Revert Proxy on Manager](#revert-proxy-on-manager)
-8. [Create Image](#create-image)
-9. [Create docker-compose.yml](#create-docker-composeyml)
-10. Bring docker-compose.yml Stack Deploy on the machine
 
 ### Revert Proxy on Manager
 - Set IP for Client
@@ -148,3 +103,9 @@ networks:
   webproxy:
     external: true
 ```
+</p>
+</details>
+
+### Bring docker-compose.yml Stack Deploy on the machine
+
+![django](https://user-images.githubusercontent.com/119097660/224472963-6fe2c144-7066-4c2e-a9db-6dddf6e91c8b.png)
